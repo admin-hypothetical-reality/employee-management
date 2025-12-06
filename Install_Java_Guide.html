@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Installation Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 5px solid #28a745;
+        }
+
+        .step h3 {
+            margin-top: 0;
+            color: #28a745;
+        }
+
+        a.download-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        a.download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        code {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
+        pre {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>☕ Java Installation Guide</h1>
+
+        <div class="warning">
+            <strong>⚠️ Java is Required!</strong><br>
+            Your Spring Boot application needs Java 17 or higher to run.
+        </div>
+
+        <h2>Option 1: Eclipse Temurin (Recommended)</h2>
+        <div class="step">
+            <h3>Step 1: Download Java 17</h3>
+            <p>Click the button below to download Java 17 (LTS):</p>
+            <a href="https://adoptium.net/temurin/releases/?version=17" class="download-btn" target="_blank">
+                📥 Download Java 17 (Eclipse Temurin)
+            </a>
+            <p style="margin-top: 15px; font-size: 14px; color: #666;">
+                Choose: <strong>Windows x64</strong> → <strong>.msi installer</strong>
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Install Java</h3>
+            <ol>
+                <li>Run the downloaded <code>.msi</code> file</li>
+                <li>Click "Next" through the installer</li>
+                <li><strong>IMPORTANT:</strong> Check the box "Add to PATH"</li>
+                <li>Click "Install"</li>
+                <li>Wait for installation to complete</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Verify Installation</h3>
+            <p>Open a <strong>NEW</strong> Command Prompt (important!) and run:</p>
+            <pre><code>java -version</code></pre>
+            <p>You should see:</p>
+            <pre><code>openjdk version "17.x.x"
+Eclipse Temurin</code></pre>
+        </div>
+
+        <h2>Option 2: Oracle JDK</h2>
+        <div class="step">
+            <p>Alternative download from Oracle:</p>
+            <a href="https://www.oracle.com/java/technologies/downloads/#java17" class="download-btn" target="_blank">
+                📥 Download Oracle JDK 17
+            </a>
+            <p style="margin-top: 15px; font-size: 14px; color: #666;">
+                Choose: <strong>Windows</strong> → <strong>x64 Installer</strong>
+            </p>
+        </div>
+
+        <h2>After Installing Java</h2>
+        <div class="step">
+            <h3>1. Restart VS Code</h3>
+            <p>Close and reopen VS Code completely</p>
+        </div>
+
+        <div class="step">
+            <h3>2. Run Your Application</h3>
+            <p>In VS Code:</p>
+            <ul>
+                <li>Open <code>EmsApplication.java</code></li>
+                <li>Look for "Run | Debug" above the <code>main</code> method</li>
+                <li>Click "Run"</li>
+            </ul>
+            <p>OR use terminal:</p>
+            <pre><code>cd "d:\employee management"
+.\mvnw.cmd spring-boot:run</code></pre>
+        </div>
+
+        <div class="step">
+            <h3>3. Access Your Application</h3>
+            <p>Open browser to:</p>
+            <pre><code>http://localhost:8080/test</code></pre>
+        </div>
+
+        <h2>🆘 Troubleshooting</h2>
+
+        <div class="warning">
+            <p><strong>If "java -version" still doesn't work after installing:</strong></p>
+            <ol>
+                <li>Close ALL Command Prompt and PowerShell windows</li>
+                <li>Close VS Code</li>
+                <li>Open a NEW Command Prompt</li>
+                <li>Try <code>java -version</code> again</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <p><strong>If PATH is not set automatically:</strong></p>
+            <ol>
+                <li>Search for "Environment Variables" in Windows</li>
+                <li>Click "Environment Variables" button</li>
+                <li>Under "System variables", find "Path"</li>
+                <li>Click "Edit"</li>
+                <li>Add: <code>C:\Program Files\Eclipse Adoptium\jdk-17.x.x-hotspot\bin</code></li>
+                <li>Click OK</li>
+                <li>Restart your computer</li>
+            </ol>
+        </div>
+
+        <h2>✅ Quick Check</h2>
+        <p>After installation, verify these commands work:</p>
+        <pre><code>java -version
+javac -version</code></pre>
+        <p>Both should show version 17 or higher.</p>
+
+    </div>
+</body>
+
+</html>

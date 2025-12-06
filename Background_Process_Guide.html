@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS - Background Process & Configuration Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c7254e;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #667eea;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 5px solid #28a745;
+        }
+
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .info {
+            background: #d1ecf1;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 5px solid #17a2b8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .flow-diagram {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            border: 2px solid #667eea;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔧 Background Process & Configuration Guide</h1>
+
+        <h2>📋 What Happens When You Run the Application?</h2>
+
+        <div class="flow-diagram">
+            <pre>
+1. JVM Starts
+   ↓
+2. Spring Boot Initializes
+   ↓
+3. Reads application.properties
+   ↓
+4. Connects to MySQL Database
+   ↓
+5. Hibernate Creates/Updates Tables (User, LeaveRequest, Payroll)
+   ↓
+6. DataInitializer Runs (Creates demo admin & employee)
+   ↓
+7. Tomcat Server Starts on Port 8080
+   ↓
+8. Application Ready! 🎉
+   ↓
+9. Waits for HTTP Requests
+</pre>
+        </div>
+
+        <h2>⚙️ Required Configurations</h2>
+
+        <h3>1. Java Installation</h3>
+        <div class="step">
+            <p><strong>What you need:</strong> Java Development Kit (JDK) 17 or higher</p>
+            <p><strong>Why:</strong> Spring Boot 3.x requires Java 17+</p>
+            <p><strong>Download:</strong> <a href="https://www.oracle.com/java/technologies/downloads/">Oracle JDK</a>
+                or <a href="https://adoptium.net/">Eclipse Temurin</a></p>
+            <p><strong>Verify:</strong> Open terminal and run:</p>
+            <pre><code>java -version</code></pre>
+            <p>Should show: <code>java version "17.x.x"</code> or higher</p>
+        </div>
+
+        <h3>2. MySQL Database</h3>
+        <div class="step">
+            <p><strong>What you need:</strong> MySQL Server 8.0+</p>
+            <p><strong>Why:</strong> To store user, leave, and payroll data</p>
+            <p><strong>Download:</strong> <a href="https://dev.mysql.com/downloads/installer/">MySQL Installer</a></p>
+            <p><strong>Setup:</strong></p>
+            <pre><code>-- Login to MySQL
+mysql -u root -p
+
+-- Create database
+CREATE DATABASE ems_db;
+
+-- Verify
+SHOW DATABASES;</code></pre>
+        </div>
+
+        <h3>3. Application Configuration File</h3>
+        <div class="step">
+            <p><strong>File:</strong> <code>src/main/resources/application.properties</code></p>
+            <p><strong>What to configure:</strong></p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>What It Does</th>
+                        <th>Your Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>spring.datasource.url</code></td>
+                        <td>Database connection URL</td>
+                        <td><code>jdbc:mysql://localhost:3306/ems_db</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>spring.datasource.username</code></td>
+                        <td>MySQL username</td>
+                        <td><code>root</code> (or your MySQL user)</td>
+                    </tr>
+                    <tr>
+                        <td><code>spring.datasource.password</code></td>
+                        <td>MySQL password</td>
+                        <td><strong>⚠️ UPDATE THIS!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>spring.jpa.hibernate.ddl-auto</code></td>
+                        <td>Auto-create/update tables</td>
+                        <td><code>update</code> (already set)</td>
+                    </tr>
+                    <tr>
+                        <td><code>server.port</code></td>
+                        <td>Application port</td>
+                        <td><code>8080</code> (already set)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>4. Maven (Build Tool)</h3>
+        <div class="step">
+            <p><strong>What you need:</strong> Maven 3.6+ (or use Maven Wrapper)</p>
+            <p><strong>Why:</strong> To download dependencies and build the project</p>
+            <p><strong>Option 1:</strong> Install Maven from <a
+                    href="https://maven.apache.org/download.cgi">maven.apache.org</a></p>
+            <p><strong>Option 2:</strong> Use IDE's built-in Maven (IntelliJ/Eclipse)</p>
+            <p><strong>Option 3:</strong> Use Maven Wrapper (no installation needed)</p>
+        </div>
+
+        <h2>🔍 What Each Configuration Does</h2>
+
+        <h3>Database Configuration</h3>
+        <div class="info">
+            <p><strong>spring.datasource.url</strong></p>
+            <p>Tells Spring Boot where to find your MySQL database:</p>
+            <ul>
+                <li><code>jdbc:mysql://</code> - Protocol</li>
+                <li><code>localhost:3306</code> - MySQL server address and port</li>
+                <li><code>/ems_db</code> - Database name</li>
+            </ul>
+        </div>
+
+        <h3>Hibernate Configuration</h3>
+        <div class="info">
+            <p><strong>spring.jpa.hibernate.ddl-auto=update</strong></p>
+            <p>Automatically creates/updates database tables based on your Java entities:</p>
+            <ul>
+                <li><code>create</code> - Drop and recreate tables (data loss!)</li>
+                <li><code>update</code> - Update tables, keep data ✅</li>
+                <li><code>validate</code> - Only check if tables match</li>
+                <li><code>none</code> - Do nothing</li>
+            </ul>
+        </div>
+
+        <h3>Thymeleaf Configuration</h3>
+        <div class="info">
+            <p><strong>spring.thymeleaf.cache=false</strong></p>
+            <p>Disables template caching during development so you see changes immediately without restarting.</p>
+        </div>
+
+        <h2>🚀 Background Processes Running</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>What It Does</th>
+                    <th>Port/Resource</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Embedded Tomcat</strong></td>
+                    <td>Web server handling HTTP requests</td>
+                    <td>Port 8080</td>
+                </tr>
+                <tr>
+                    <td><strong>Hibernate/JPA</strong></td>
+                    <td>ORM - Converts Java objects to SQL</td>
+                    <td>Database connection pool</td>
+                </tr>
+                <tr>
+                    <td><strong>Spring IoC Container</strong></td>
+                    <td>Manages beans (Controllers, Services, Repositories)</td>
+                    <td>Memory</td>
+                </tr>
+                <tr>
+                    <td><strong>Thymeleaf Engine</strong></td>
+                    <td>Renders HTML templates</td>
+                    <td>Memory</td>
+                </tr>
+                <tr>
+                    <td><strong>MySQL Connection</strong></td>
+                    <td>Database connection for queries</td>
+                    <td>Port 3306</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ Pre-Flight Checklist</h2>
+
+        <div class="step">
+            <p>Before running, ensure:</p>
+            <ol>
+                <li>✅ Java 17+ installed (<code>java -version</code>)</li>
+                <li>✅ MySQL Server running</li>
+                <li>✅ Database <code>ems_db</code> created</li>
+                <li>✅ MySQL password updated in <code>application.properties</code></li>
+                <li>✅ Port 8080 is free (not used by another app)</li>
+            </ol>
+        </div>
+
+        <h2>⚠️ Common Issues</h2>
+
+        <div class="warning">
+            <p><strong>Error: "Cannot connect to database"</strong></p>
+            <p><strong>Fix:</strong></p>
+            <ul>
+                <li>Check if MySQL is running</li>
+                <li>Verify database name is <code>ems_db</code></li>
+                <li>Check username/password in <code>application.properties</code></li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <p><strong>Error: "Port 8080 already in use"</strong></p>
+            <p><strong>Fix:</strong></p>
+            <ul>
+                <li>Change port in <code>application.properties</code>: <code>server.port=8081</code></li>
+                <li>Or stop the application using port 8080</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <p><strong>Error: "Java version mismatch"</strong></p>
+            <p><strong>Fix:</strong></p>
+            <ul>
+                <li>Install Java 17 or higher</li>
+                <li>Set <code>JAVA_HOME</code> environment variable</li>
+            </ul>
+        </div>
+
+        <h2>🎯 What Happens After Startup?</h2>
+
+        <ol>
+            <li><strong>DataInitializer runs</strong> - Creates demo admin and employee users</li>
+            <li><strong>Server listens</strong> - Waits for requests on <code>http://localhost:8080</code></li>
+            <li><strong>Auto-redirect</strong> - Root URL redirects to <code>/login</code></li>
+            <li><strong>Session management</strong> - Tracks logged-in users</li>
+            <li><strong>Database queries</strong> - Executes when you interact with the UI</li>
+        </ol>
+
+        <h2>📊 Resource Usage</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Resource</th>
+                    <th>Typical Usage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Memory (RAM)</td>
+                    <td>~300-500 MB</td>
+                </tr>
+                <tr>
+                    <td>CPU</td>
+                    <td>Low (idle), Medium (during requests)</td>
+                </tr>
+                <tr>
+                    <td>Disk</td>
+                    <td>~50 MB (dependencies cached)</td>
+                </tr>
+                <tr>
+                    <td>Network Ports</td>
+                    <td>8080 (HTTP), 3306 (MySQL)</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+
+</html>

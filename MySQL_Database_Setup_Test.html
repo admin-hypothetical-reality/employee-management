@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Database Setup & Test Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 5px solid #28a745;
+        }
+
+        .step h3 {
+            margin-top: 0;
+            color: #28a745;
+        }
+
+        code {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
+        pre {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #667eea;
+        }
+
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+        }
+
+        img {
+            max-width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .highlight {
+            background: #fffacd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🗄️ MySQL Database Setup & Test Guide</h1>
+
+        <h2>Step 1: Connect to MySQL</h2>
+        <div class="step">
+            <h3>In MySQL Workbench:</h3>
+            <ol>
+                <li>Click on <strong>"Local root instance"</strong> (or any connection you see)</li>
+                <li>Enter your MySQL password when prompted</li>
+                <li>Click <strong>OK</strong></li>
+            </ol>
+            <div class="warning">
+                <strong>⚠️ Important:</strong> Remember the password you enter! You'll need it for the application.
+            </div>
+        </div>
+
+        <h2>Step 2: Create Database</h2>
+        <div class="step">
+            <h3>Method 1: Using SQL Query</h3>
+            <p>In the query editor (the big text area), type:</p>
+            <pre><code>CREATE DATABASE ems_db;</code></pre>
+            <p>Then click the <strong>⚡ lightning bolt icon</strong> to execute</p>
+        </div>
+
+        <div class="step">
+            <h3>Method 2: Using GUI</h3>
+            <ol>
+                <li>Right-click on <strong>"Schemas"</strong> in the left panel</li>
+                <li>Select <strong>"Create Schema"</strong></li>
+                <li>Name: <code>ems_db</code></li>
+                <li>Click <strong>Apply</strong></li>
+                <li>Click <strong>Apply</strong> again to confirm</li>
+                <li>Click <strong>Finish</strong></li>
+            </ol>
+        </div>
+
+        <h2>Step 3: Verify Database Created</h2>
+        <div class="step">
+            <h3>Run this query:</h3>
+            <pre><code>SHOW DATABASES;</code></pre>
+            <p>You should see <code>ems_db</code> in the list!</p>
+            <div class="success">
+                <strong>✅ Success!</strong> If you see <code>ems_db</code>, the database is created.
+            </div>
+        </div>
+
+        <h2>Step 4: Test Connection</h2>
+        <div class="step">
+            <h3>Select the database:</h3>
+            <pre><code>USE ems_db;</code></pre>
+            <p>Execute this query. If no error appears, connection works!</p>
+        </div>
+
+        <h2>Step 5: Update Application Password</h2>
+        <div class="step">
+            <h3>CRITICAL: Update your password in the application</h3>
+            <p>Open: <code>src/main/resources/application.properties</code></p>
+            <p>Change line 4 to match your MySQL password:</p>
+            <pre><code>spring.datasource.password=<span class="highlight">YOUR_MYSQL_PASSWORD</span></code></pre>
+
+            <div class="warning">
+                <strong>Example:</strong><br>
+                If your MySQL password is <code>admin123</code>, change it to:<br>
+                <code>spring.datasource.password=admin123</code>
+            </div>
+        </div>
+
+        <h2>Step 6: Test the Application</h2>
+        <div class="step">
+            <h3>Start your Spring Boot application:</h3>
+            <ol>
+                <li>In VS Code, click <strong>Run</strong> in <code>EmsApplication.java</code></li>
+                <li>Wait for: <code>Started EmsApplication in X.XXX seconds</code></li>
+                <li>Look for these messages:
+                    <pre><code>✓ Admin user created: admin@ems.com / admin123
+✓ Demo employee created: employee@ems.com / emp123</code></pre>
+                </li>
+            </ol>
+        </div>
+
+        <h2>Step 7: Verify Tables Created</h2>
+        <div class="step">
+            <h3>Back in MySQL Workbench:</h3>
+            <p>Run this query:</p>
+            <pre><code>USE ems_db;
+SHOW TABLES;</code></pre>
+
+            <p>You should see 3 tables:</p>
+            <ul>
+                <li><code>users</code></li>
+                <li><code>leave_requests</code></li>
+                <li><code>payroll</code></li>
+            </ul>
+
+            <div class="success">
+                <strong>✅ Perfect!</strong> If you see these tables, everything is working!
+            </div>
+        </div>
+
+        <h2>Step 8: Check Demo Data</h2>
+        <div class="step">
+            <h3>Verify demo users were created:</h3>
+            <pre><code>SELECT * FROM users;</code></pre>
+
+            <p>You should see 2 users:</p>
+            <ul>
+                <li>Admin User (admin@ems.com)</li>
+                <li>John Doe (employee@ems.com)</li>
+            </ul>
+        </div>
+
+        <h2>🎯 Quick Reference</h2>
+
+        <div class="step">
+            <h3>Common MySQL Commands:</h3>
+            <pre><code>-- Show all databases
+SHOW DATABASES;
+
+-- Use a database
+USE ems_db;
+
+-- Show all tables
+SHOW TABLES;
+
+-- View table structure
+DESCRIBE users;
+
+-- View all data in a table
+SELECT * FROM users;
+
+-- Count records
+SELECT COUNT(*) FROM users;</code></pre>
+        </div>
+
+        <h2>🐛 Troubleshooting</h2>
+
+        <div class="warning">
+            <h3>Error: "Access denied for user 'root'@'localhost'"</h3>
+            <p><strong>Solution:</strong> Your MySQL password in <code>application.properties</code> is wrong!</p>
+            <ol>
+                <li>Check what password you used to login to MySQL Workbench</li>
+                <li>Update line 4 in <code>application.properties</code> with that password</li>
+                <li>Restart the Spring Boot application</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <h3>Error: "Unknown database 'ems_db'"</h3>
+            <p><strong>Solution:</strong> Database not created!</p>
+            <ol>
+                <li>Run: <code>CREATE DATABASE ems_db;</code></li>
+                <li>Verify with: <code>SHOW DATABASES;</code></li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <h3>Can't connect to MySQL Workbench</h3>
+            <p><strong>Solution:</strong> MySQL service not running!</p>
+            <ol>
+                <li>Open <strong>Services</strong> (Windows + R, type <code>services.msc</code>)</li>
+                <li>Find <strong>MySQL</strong> service</li>
+                <li>Right-click → <strong>Start</strong></li>
+            </ol>
+        </div>
+
+        <h2>✅ Success Checklist</h2>
+        <div class="success">
+            <p>You're ready when you can check all these:</p>
+            <ul>
+                <li>☐ Connected to MySQL Workbench</li>
+                <li>☐ Database <code>ems_db</code> created</li>
+                <li>☐ Password updated in <code>application.properties</code></li>
+                <li>☐ Spring Boot application starts without errors</li>
+                <li>☐ Tables created (users, leave_requests, payroll)</li>
+                <li>☐ Demo users visible in database</li>
+                <li>☐ Can access <code>http://localhost:8080/login</code></li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+
+</html>

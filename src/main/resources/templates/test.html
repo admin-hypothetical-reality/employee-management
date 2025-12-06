@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page - Server Running!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 48px;
+            margin: 0 0 20px 0;
+        }
+
+        p {
+            color: #555;
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .success {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .links {
+            margin-top: 30px;
+        }
+
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        a:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎉 Success!</h1>
+        <p class="success">✅ Server is Running!</p>
+        <p>Your Spring Boot application is working perfectly.</p>
+        <p>Server: <strong>http://localhost:8080</strong></p>
+
+        <div class="links">
+            <a href="/login">Go to Login Page</a>
+            <a href="/test">Refresh Test Page</a>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+            <p style="font-size: 14px; color: #666;">
+                <strong>Next Steps:</strong><br>
+                1. Make sure MySQL is running<br>
+                2. Database 'ems_db' is created<br>
+                3. Then visit <a href="/login" style="display: inline; padding: 5px 10px; margin: 0;">/login</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

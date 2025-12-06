@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <h1>Admin Dashboard</h1>
+            <a href="/logout" class="btn-logout">Logout</a>
+        </nav>
+
+        <div class="dashboard-content">
+            <!-- Add Employee Section -->
+            <section class="card">
+                <h2>Add New Employee</h2>
+                <form action="/admin/employees" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Department:</label>
+                            <input type="text" name="department" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Salary:</label>
+                        <input type="number" name="salary" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Add Employee</button>
+                </form>
+            </section>
+
+            <!-- Employee List -->
+            <section class="card">
+                <h2>All Employees</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Salary</th>
+                            <th>Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="emp : ${employees}">
+                            <td th:text="${emp.id}"></td>
+                            <td th:text="${emp.name}"></td>
+                            <td th:text="${emp.email}"></td>
+                            <td th:text="${emp.department}"></td>
+                            <td th:text="${emp.salary}"></td>
+                            <td th:text="${emp.joinDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Pending Leave Requests -->
+            <section class="card">
+                <h2>Pending Leave Requests</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="leave : ${pendingLeaves}">
+                            <td th:text="${leave.employee.name}"></td>
+                            <td th:text="${leave.startDate}"></td>
+                            <td th:text="${leave.endDate}"></td>
+                            <td th:text="${leave.reason}"></td>
+                            <td>
+                                <form th:action="@{/admin/leaves/{id}/approve(id=${leave.id})}" method="post"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn-success">Approve</button>
+                                </form>
+                                <form th:action="@{/admin/leaves/{id}/reject(id=${leave.id})}" method="post"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn-danger">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Generate Payroll -->
+            <section class="card">
+                <h2>Generate Payroll</h2>
+                <form action="/admin/payroll" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Employee:</label>
+                            <select name="employeeId" required>
+                                <option th:each="emp : ${employees}" th:value="${emp.id}" th:text="${emp.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Month:</label>
+                            <input type="text" name="month" placeholder="January 2024" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount:</label>
+                            <input type="number" name="amount" step="0.01" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Generate</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

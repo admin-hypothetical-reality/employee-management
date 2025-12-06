@@ -1,0 +1,23 @@
+# Ignore compiled files
+target/
+*.class
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+
+# Ignore sensitive configuration (IMPORTANT!)
+application-local.properties
+
+# Ignore Maven wrapper jar (optional)
+.mvn/wrapper/maven-wrapper.jar

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS - Project Structure</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .tree {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            overflow-x: auto;
+        }
+
+        .folder {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .file {
+            color: #333;
+        }
+
+        .java {
+            color: #b07219;
+        }
+
+        .xml {
+            color: #e34c26;
+        }
+
+        .html {
+            color: #e34c26;
+        }
+
+        .css {
+            color: #563d7c;
+        }
+
+        .properties {
+            color: #28a745;
+        }
+
+        .md {
+            color: #083fa1;
+        }
+
+        pre {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .description {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .description h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+
+        .stat-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📁 Employee Management System - Project Structure</h1>
+
+        <div class="tree">
+            <pre>employee-management-system/
+│
+├── <span class="xml">pom.xml</span>                                    # Maven configuration
+├── <span class="md">README.md</span>                                  # Project documentation
+│
+└── src/
+    └── main/
+        ├── java/
+        │   └── com/
+        │       └── ems/
+        │           ├── <span class="java">EmsApplication.java</span>           # Main Spring Boot application
+        │           │
+        │           ├── config/
+        │           │   └── <span class="java">DataInitializer.java</span>     # Demo data setup
+        │           │
+        │           ├── controller/                  # Web layer (handles HTTP requests)
+        │           │   ├── <span class="java">AuthController.java</span>      # Login/Logout
+        │           │   ├── <span class="java">AdminController.java</span>     # Admin operations
+        │           │   └── <span class="java">EmployeeController.java</span>  # Employee operations
+        │           │
+        │           ├── model/                       # Entity layer (database tables)
+        │           │   ├── <span class="java">User.java</span>                # User entity (Admin/Employee)
+        │           │   ├── <span class="java">LeaveRequest.java</span>        # Leave request entity
+        │           │   └── <span class="java">Payroll.java</span>             # Payroll entity
+        │           │
+        │           ├── repository/                  # Data access layer (database queries)
+        │           │   ├── <span class="java">UserRepository.java</span>      # User database operations
+        │           │   ├── <span class="java">LeaveRequestRepository.java</span> # Leave queries
+        │           │   └── <span class="java">PayrollRepository.java</span>   # Payroll queries
+        │           │
+        │           └── service/                     # Business logic layer
+        │               ├── <span class="java">UserService.java</span>         # User business logic
+        │               ├── <span class="java">LeaveService.java</span>        # Leave management logic
+        │               └── <span class="java">PayrollService.java</span>      # Payroll logic
+        │
+        └── resources/
+            ├── <span class="properties">application.properties</span>         # App configuration (DB, etc.)
+            │
+            ├── templates/                           # Thymeleaf HTML templates
+            │   ├── <span class="html">login.html</span>                      # Login page
+            │   ├── <span class="html">admin-dashboard.html</span>            # Admin dashboard
+            │   └── <span class="html">employee-dashboard.html</span>         # Employee dashboard
+            │
+            └── static/                              # Static resources
+                └── css/
+                    └── <span class="css">style.css</span>                   # Application styles
+</pre>
+        </div>
+
+        <div class="description">
+            <h2>📋 Layer Breakdown</h2>
+            <p><strong>Controller Layer:</strong> Handles HTTP requests, routes to services, returns views</p>
+            <p><strong>Service Layer:</strong> Contains business logic, validates data, coordinates operations</p>
+            <p><strong>Repository Layer:</strong> Interfaces with database using Spring Data JPA</p>
+            <p><strong>Model Layer:</strong> Defines database entities and their relationships</p>
+            <p><strong>View Layer:</strong> Thymeleaf templates for rendering HTML pages</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>3</h3>
+                <p>Controllers</p>
+            </div>
+            <div class="stat-card">
+                <h3>3</h3>
+                <p>Services</p>
+            </div>
+            <div class="stat-card">
+                <h3>3</h3>
+                <p>Repositories</p>
+            </div>
+            <div class="stat-card">
+                <h3>3</h3>
+                <p>Entities</p>
+            </div>
+            <div class="stat-card">
+                <h3>3</h3>
+                <p>HTML Templates</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

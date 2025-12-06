@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS - Technical Stack & Setup Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            border-bottom: 2px solid #27ae60;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .step {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .step h3 {
+            margin-top: 0;
+        }
+
+        ul {
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Technical Stack & Setup Guide</h1>
+
+    <h2>1. Technical Stack</h2>
+
+    <div class="step">
+        <h3>Full Stack (Java)</h3>
+        <ul>
+            <li><strong>Language</strong>: Java 17 (LTS)</li>
+            <li><strong>Framework</strong>: Spring Boot 3.x</li>
+            <li><strong>Build Tool</strong>: Maven</li>
+            <li><strong>Database</strong>: MySQL 8.0</li>
+            <li><strong>Template Engine</strong>: Thymeleaf (Server-side HTML rendering)</li>
+            <li><strong>ORM</strong>: Spring Data JPA / Hibernate</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3>Frontend Technologies</h3>
+        <ul>
+            <li><strong>HTML5</strong>: Structure</li>
+            <li><strong>CSS3</strong>: Styling</li>
+            <li><strong>JavaScript</strong>: Client-side interactivity (optional)</li>
+            <li><strong>Thymeleaf</strong>: Dynamic HTML generation</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3>Development Tools</h3>
+        <ul>
+            <li><strong>IDE</strong>: IntelliJ IDEA / Eclipse / VS Code</li>
+            <li><strong>Database Client</strong>: MySQL Workbench</li>
+            <li><strong>Version Control</strong>: Git</li>
+        </ul>
+    </div>
+
+    <h2>2. Setup Instructions</h2>
+
+    <h3>Prerequisites</h3>
+    <p>Ensure you have the following installed on your system:</p>
+    <ul>
+        <li><a href="https://www.oracle.com/java/technologies/downloads/">Java JDK 17+</a></li>
+        <li><a href="https://maven.apache.org/download.cgi">Maven</a> (or use the wrapper included in the project)</li>
+        <li><a href="https://dev.mysql.com/downloads/installer/">MySQL Server</a></li>
+    </ul>
+
+    <h3>Step 1: Database Configuration</h3>
+    <div class="step">
+        <p>1. Open your MySQL Client (Workbench or Command Line).</p>
+        <p>2. Create the database:</p>
+        <pre><code>CREATE DATABASE ems_db;</code></pre>
+        <p>3. (Optional) Create a specific user or use <code>root</code>:</p>
+        <pre><code>CREATE USER 'ems_user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON ems_db.* TO 'ems_user'@'localhost';
+FLUSH PRIVILEGES;</code></pre>
+    </div>
+
+    <h3>Step 2: Project Setup (Spring Boot)</h3>
+    <div class="step">
+        <p>1. Navigate to the project root directory.</p>
+        <p>2. Open <code>src/main/resources/application.properties</code> and configure your DB credentials:</p>
+        <pre><code>spring.datasource.url=jdbc:mysql://localhost:3306/ems_db
+spring.datasource.username=root
+spring.datasource.password=YOUR_MYSQL_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+spring.thymeleaf.cache=false</code></pre>
+        <p>3. Build and run the application:</p>
+        <pre><code>mvn clean install
+mvn spring-boot:run</code></pre>
+        <p>The application will start on <strong>http://localhost:8080</strong>.</p>
+    </div>
+
+    <h3>Step 3: Accessing the Application</h3>
+    <div class="step">
+        <p>Open your web browser and go to:</p>
+        <p><code>http://localhost:8080/login</code></p>
+        <p>You should see the Login Page.</p>
+    </div>
+
+    <h2>3. Dependencies (pom.xml)</h2>
+    <div class="step">
+        <p>Key Spring Boot dependencies:</p>
+        <pre><code>&lt;dependencies&gt;
+    &lt;!-- Spring Boot Web --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;!-- Spring Data JPA --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;!-- Thymeleaf --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;!-- MySQL Driver --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+    </div>
+
+</body>
+
+</html>

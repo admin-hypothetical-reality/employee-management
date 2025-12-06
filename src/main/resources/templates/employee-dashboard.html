@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - EMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <h1>Employee Dashboard</h1>
+            <div>
+                <span th:text="'Welcome, ' + ${user.name}"></span>
+                <a href="/logout" class="btn-logout">Logout</a>
+            </div>
+        </nav>
+
+        <div class="dashboard-content">
+            <!-- Apply for Leave -->
+            <section class="card">
+                <h2>Apply for Leave</h2>
+                <form action="/employee/leaves" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Date:</label>
+                            <input type="date" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date:</label>
+                            <input type="date" name="endDate" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Reason:</label>
+                        <textarea name="reason" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Submit Leave Request</button>
+                </form>
+            </section>
+
+            <!-- My Leave Requests -->
+            <section class="card">
+                <h2>My Leave Requests</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="leave : ${leaves}">
+                            <td th:text="${leave.startDate}"></td>
+                            <td th:text="${leave.endDate}"></td>
+                            <td th:text="${leave.reason}"></td>
+                            <td>
+                                <span th:text="${leave.status}" th:class="${leave.status == 'APPROVED' ? 'status-approved' : 
+                                                 leave.status == 'REJECTED' ? 'status-rejected' : 
+                                                 'status-pending'}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Salary History -->
+            <section class="card">
+                <h2>Salary History</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="payroll : ${payrolls}">
+                            <td th:text="${payroll.month}"></td>
+                            <td th:text="${payroll.amount}"></td>
+                            <td>
+                                <span th:text="${payroll.status}"
+                                    th:class="${payroll.status == 'PAID' ? 'status-approved' : 'status-pending'}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

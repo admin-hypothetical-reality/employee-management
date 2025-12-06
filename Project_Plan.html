@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System - Implementation Plan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .note {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        ul {
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Employee Management System Implementation Plan</h1>
+
+    <h2>Goal Description</h2>
+    <p>Build an Employee Management System using <strong>Spring Boot (Java)</strong> for both backend and frontend.</p>
+    <ul>
+        <li><strong>Admin</strong>: Manage employees, leaves, and payroll.</li>
+        <li><strong>Employee</strong>: View leave status and salary history.</li>
+    </ul>
+
+    <div class="note">
+        <strong>Architecture:</strong> This is a <strong>unified Spring Boot application</strong> using
+        <strong>Thymeleaf</strong> for server-side HTML rendering. No separate frontend framework needed.
+    </div>
+
+    <h2>Project Structure</h2>
+    <pre><code>employee-management-system/
+├── src/main/java/com/ems/
+│   ├── EmsApplication.java
+│   ├── config/
+│   │   └── SecurityConfig.java
+│   ├── controller/
+│   │   ├── AuthController.java
+│   │   ├── AdminController.java
+│   │   └── EmployeeController.java
+│   ├── model/
+│   │   ├── User.java
+│   │   ├── LeaveRequest.java
+│   │   └── Payroll.java
+│   ├── repository/
+│   │   ├── UserRepository.java
+│   │   ├── LeaveRequestRepository.java
+│   │   └── PayrollRepository.java
+│   └── service/
+│       ├── UserService.java
+│       ├── LeaveService.java
+│       └── PayrollService.java
+├── src/main/resources/
+│   ├── application.properties
+│   ├── templates/ (Thymeleaf HTML)
+│   │   ├── login.html
+│   │   ├── admin-dashboard.html
+│   │   └── employee-dashboard.html
+│   └── static/
+│       ├── css/
+│       │   └── style.css
+│       └── js/
+│           └── app.js
+└── pom.xml</code></pre>
+
+    <h2>Detailed Class Design</h2>
+
+    <h3>1. Entities (<code>com.ems.model</code>)</h3>
+
+    <h4><code>User.java</code></h4>
+    <p>Represents both Admin and Employees.</p>
+    <ul>
+        <li><code>Long id</code> (Primary Key)</li>
+        <li><code>String name</code></li>
+        <li><code>String email</code> (Unique)</li>
+        <li><code>String password</code></li>
+        <li><code>String role</code> (Enum: ADMIN, EMPLOYEE)</li>
+        <li><code>Double salary</code></li>
+        <li><code>String department</code></li>
+        <li><code>LocalDate joinDate</code></li>
+    </ul>
+
+    <h4><code>LeaveRequest.java</code></h4>
+    <ul>
+        <li><code>Long id</code></li>
+        <li><code>User employee</code> (ManyToOne)</li>
+        <li><code>LocalDate startDate</code></li>
+        <li><code>LocalDate endDate</code></li>
+        <li><code>String reason</code></li>
+        <li><code>String status</code> (PENDING, APPROVED, REJECTED)</li>
+    </ul>
+
+    <h4><code>Payroll.java</code></h4>
+    <ul>
+        <li><code>Long id</code></li>
+        <li><code>User employee</code> (ManyToOne)</li>
+        <li><code>String month</code> (e.g., "January 2024")</li>
+        <li><code>Double amount</code></li>
+        <li><code>String status</code> (PAID, PENDING)</li>
+    </ul>
+
+    <h3>2. Services (<code>com.ems.service</code>)</h3>
+
+    <h4><code>UserService</code></h4>
+    <ul>
+        <li><code>User registerUser(User user)</code></li>
+        <li><code>User authenticate(String email, String password)</code></li>
+        <li><code>List&lt;User&gt; getAllEmployees()</code></li>
+    </ul>
+
+    <h4><code>LeaveService</code></h4>
+    <ul>
+        <li><code>LeaveRequest applyLeave(LeaveRequest request)</code></li>
+        <li><code>List&lt;LeaveRequest&gt; getLeavesByEmployee(Long employeeId)</code></li>
+        <li><code>List&lt;LeaveRequest&gt; getAllPendingLeaves()</code></li>
+        <li><code>void approveLeave(Long leaveId)</code></li>
+    </ul>
+
+    <h4><code>PayrollService</code></h4>
+    <ul>
+        <li><code>void generatePayroll(Long employeeId, String month, Double amount)</code></li>
+        <li><code>List&lt;Payroll&gt; getPayrollHistory(Long employeeId)</code></li>
+    </ul>
+
+    <h3>3. Controllers (<code>com.ems.controller</code>)</h3>
+
+    <h4><code>AuthController</code></h4>
+    <ul>
+        <li><code>GET /login</code>: Display login page.</li>
+        <li><code>POST /login</code>: Authenticate and redirect to appropriate dashboard.</li>
+        <li><code>GET /logout</code>: Logout user.</li>
+    </ul>
+
+    <h4><code>AdminController</code></h4>
+    <ul>
+        <li><code>GET /admin/dashboard</code>: Display admin dashboard.</li>
+        <li><code>POST /admin/employees</code>: Add new employee.</li>
+        <li><code>GET /admin/employees</code>: List all employees.</li>
+        <li><code>POST /admin/leaves/{id}/approve</code>: Approve leave.</li>
+        <li><code>POST /admin/payroll</code>: Generate payroll record.</li>
+    </ul>
+
+    <h4><code>EmployeeController</code></h4>
+    <ul>
+        <li><code>GET /employee/dashboard</code>: Display employee dashboard.</li>
+        <li><code>GET /employee/leaves</code>: View my leaves.</li>
+        <li><code>POST /employee/leaves</code>: Apply for leave.</li>
+        <li><code>GET /employee/payroll</code>: View my salary history.</li>
+    </ul>
+
+    <h2>Frontend Design (Thymeleaf Templates)</h2>
+
+    <h3>Templates</h3>
+    <ul>
+        <li><code>login.html</code>: Login form for both Admin and Employee.</li>
+        <li><code>admin-dashboard.html</code>: Admin dashboard with employee management, leave approvals, and payroll
+            generation.</li>
+        <li><code>employee-dashboard.html</code>: Employee dashboard to view leaves and salary.</li>
+    </ul>
+
+    <h2>Verification Plan</h2>
+    <h3>Automated Tests</h3>
+    <ul>
+        <li><strong>Unit Tests</strong>: JUnit tests for <code>UserService</code> and <code>LeaveService</code> logic.
+        </li>
+        <li><strong>Integration Tests</strong>: Spring Boot Test for controller endpoints.</li>
+    </ul>
+
+    <h3>Manual Verification</h3>
+    <ol>
+        <li><strong>Admin Flow</strong>: Login → Add Employee → View Employee List → Approve Leave.</li>
+        <li><strong>Employee Flow</strong>: Login → Apply Leave → Check Status → View Payroll.</li>
+    </ol>
+
+</body>
+
+</html>
